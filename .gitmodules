@@ -1,0 +1,15 @@
+[submodule "hatchet"]
+	path = hatchet
+	url = https://github.com/LLNL/hatchet.git
+[submodule "Caliper"]
+	path = Caliper
+	url = https://github.com/LLNL/Caliper.git
+[submodule "dcvis"]
+	path = dcvis
+	url = https://lc.llnl.gov/bitbucket/scm/~pascal/dcvis.git
+[submodule "spotbe"]
+	path = spotbe
+	url = https://lc.llnl.gov/bitbucket/scm/spot2/spotbe.git
+[submodule "spot-frontend"]
+	path = spot-frontend
+	url = https://lc.llnl.gov/bitbucket/scm/spot/spot-frontend.git
