@@ -1,0 +1,3 @@
+caliquery: /usr/gapps/spot/caliper-install/bin/cali-query
+template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-singlecali.ipynb'
+multi_template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-manycali.ipynb'

@@ -11,17 +11,24 @@ app.use(express.static('/usr/gapps/spot/static/'))
 // API for data
 app.post('/getdata',(req, res) =>{
     
-    const command = "python3 /usr/gapps/spot/backend.py getData /data/" + 
+
+    const command = "python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml getData /data/" + 
                      req.body.dataSetKey + 
-                     " '" + JSON.stringify(req.body.cachedRunCtimes) + "'"
-    const subprocess = exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
+                     " '" + JSON.stringify(req.body.cachedRunCtimes) + "'"  
+    exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
             res.send(stdout.toString())
         })
 })
 
-// API for data
 app.post('/spotJupyter',(req, res) =>{
-    const command = `python3 /usr/gapps/spot/backend.py jupyter --container '${req.body.filepath}'`
+    const command = `python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container jupyter '${req.body.filepath}'`
+    exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
+             res.send(stdout.toString())
+         })
+})
+
+app.post('/spotMultiJupyter',(req, res) =>{
+    const command = `python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container multi_jupyter '${req.body.basepath}' '${JSON.stringify(req.body.subpaths)}'`
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())
          })
