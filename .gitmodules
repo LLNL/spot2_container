@@ -10,6 +10,3 @@
 [submodule "spotbe"]
 	path = spotbe
 	url = https://lc.llnl.gov/bitbucket/scm/spot2/spotbe.git
-[submodule "spot-frontend"]
-	path = spot-frontend
-	url = https://lc.llnl.gov/bitbucket/scm/spot/spot-frontend.git
