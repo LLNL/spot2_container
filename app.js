@@ -12,7 +12,7 @@ app.use(express.static('/usr/gapps/spot/static/'))
 app.post('/getdata',(req, res) =>{
     
 
-    const command = "python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml getData /data/" + 
+    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml getData /data/" + 
                      req.body.dataSetKey + 
                      " '" + JSON.stringify(req.body.cachedRunCtimes) + "'"  
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
@@ -21,14 +21,14 @@ app.post('/getdata',(req, res) =>{
 })
 
 app.post('/spotJupyter',(req, res) =>{
-    const command = `python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container jupyter '${req.body.filepath}'`
+    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container jupyter '${req.body.filepath}'`
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())
          })
 })
 
 app.post('/spotMultiJupyter',(req, res) =>{
-    const command = `python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container multi_jupyter '${req.body.basepath}' '${JSON.stringify(req.body.subpaths)}'`
+    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container multi_jupyter '${req.body.basepath}' '${JSON.stringify(req.body.subpaths)}'`
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())
          })
