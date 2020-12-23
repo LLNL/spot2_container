@@ -27,20 +27,18 @@ app.post('/getdata',(req, res) =>{
 app.post('/getmemory',(req, res) =>{
 
     //console.log('app.js /getmemory');
-
-    var filepath = "lul_sept_28_timeseries/200924-16454258362.cali";
+    var filepath = req.body.filepath;
 
     //  /usr/gapps/spot/venv_python/bin/python3 /usr/gapps/spot/dev/spot.py memory /usr/gapps/spot/datasets/lulesh_gen/100/1.cali
-    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml getData /data/" +
-        filepath;
+    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml memory /data/" +
+                filepath;
 
-    var command2 = "ls -l";
-    var command3 = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml memory /data/lul_sept_28_timeseries";
 
-    //console.log(command3);
+    //console.log( filepath );
+    //console.log(command);
     //console.log(req.body.filepath);
 
-    exec(command3, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
+    exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
 
             //console.log("memory resposne")
             res.send(stdout.toString())
