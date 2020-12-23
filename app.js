@@ -26,7 +26,7 @@ app.post('/getdata',(req, res) =>{
 
 app.post('/getmemory',(req, res) =>{
 
-    console.log('app.js /getmemory  xxsdfg');
+    //console.log('app.js /getmemory');
 
     var filepath = "lul_sept_28_timeseries/200924-16454258362.cali";
 
@@ -37,12 +37,12 @@ app.post('/getmemory',(req, res) =>{
     var command2 = "ls -l";
     var command3 = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml memory /data/lul_sept_28_timeseries";
 
-    console.log(command3);
-    console.log(req.body.filepath);
+    //console.log(command3);
+    //console.log(req.body.filepath);
 
     exec(command3, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
 
-            console.log("memory resposne")
+            //console.log("memory resposne")
             res.send(stdout.toString())
         })
 })
