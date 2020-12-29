@@ -8,6 +8,7 @@ RUN sudo /opt/conda/bin/pip install pandas matplotlib
 run sudo /opt/conda/bin/pip3 install pyyaml graphframes
 RUN npm init -y
 RUN npm install express
+RUN npm install path
 RUN mkdir /notebooks /data
 COPY Caliper Caliper
 RUN cd /usr/gapps/spot/Caliper \
@@ -38,6 +39,7 @@ COPY spotfe/ static/
 COPY Environment.js static/web/js/
 COPY spotbe/spot.py ./backend.py
 COPY spotbe/templates/ templates
+COPY spotbe/demos /demos
 COPY backend_config.yaml .
 COPY app.js .
 COPY runspot.sh .

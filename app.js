@@ -1,3 +1,4 @@
+const path = require('path')
 const express = require('express')
 const app = express()
 const {exec, execSync} = require('child_process')
@@ -8,15 +9,33 @@ app.use(express.json())
 // Handle static files
 app.use(express.static('/usr/gapps/spot/static/'))
 
+function sanitizepath(userpath) {
+    if (typeof(userpath) !== 'string')
+        return "/invalidpath";
+
+    abspath = ""
+    if (path.isAbsolute(userpath)) {
+        abspath = userpath;
+    }
+    else {
+        abspath = "/data/" + userpath;
+    }
+
+    real = path.normalize(abspath);
+    valid = real.startsWith("/data/") || real.startsWith("/demos/");
+    if (!valid) {
+        return "/invalidpath";
+    }
+    return real;
+}
+
 // API for data
 app.post('/getdata',(req, res) =>{
     
 
-    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml getData /data/" + 
-                     req.body.dataSetKey + 
+    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml getData " + 
+                    sanitizepath(req.body.dataSetKey) + 
                      " '" + JSON.stringify(req.body.cachedRunCtimes) + "'"
-
-    console.log( command );
 
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
             res.send(stdout.toString())
@@ -25,8 +44,6 @@ app.post('/getdata',(req, res) =>{
 
 
 app.post('/getmemory',(req, res) =>{
-
-    console.log('app.js /getmemory  xxsdfg');
 
     var filepath = "lul_sept_28_timeseries/200924-16454258362.cali";
 
@@ -49,14 +66,16 @@ app.post('/getmemory',(req, res) =>{
 
 
 app.post('/spotJupyter',(req, res) =>{
-    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container jupyter '${req.body.filepath}'`
+    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container jupyter '` + sanitizepath(req.body.filepath) + `'`
+    
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())
          })
 })
 
 app.post('/spotMultiJupyter',(req, res) =>{
-    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container multi_jupyter '${req.body.basepath}' '${JSON.stringify(req.body.subpaths)}'`
+    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container multi_jupyter '` +
+          sanitizepath(req.body.basepath) + `' '${JSON.stringify(req.body.subpaths)}'`
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())
          })
