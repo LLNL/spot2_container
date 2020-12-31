@@ -3,11 +3,106 @@ const express = require('express')
 const app = express()
 const {exec, execSync} = require('child_process')
 const port = process.env.PORT || 8080
+var bodyParser = require('body-parser')
+var multer = require('multer')
+var upload = multer()
+var session = require('express-session')
+var cookieParser = require('cookie-parser')
+const bcrypt = require('bcryptjs')
+const fs = require('fs')
+const crypto = require('crypto')
+
 
 app.use(express.json())
 
+app.set('view engine', 'pug');
+app.set('views', '/usr/gapps/spot/static/views');
+
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(upload.array());
+app.use(cookieParser());
+app.use(session({
+    secret: crypto.randomBytes(64).toString('hex'),
+    resave: false,
+    saveUninitialized: false
+}))
+
+var hashedpw = undefined
+
+function loadPassword() {
+    try {
+        pw = fs.readFileSync(0).toString().trim()
+        if (pw && pw.length != 0) {
+            hashedpw = bcrypt.hashSync(pw, 10)
+            return
+        }
+    }
+    catch (err) {
+    }
+
+    try {
+        hashedpw = fs.readFileSync("/usr/gapps/spot/defaultpw").toString().trim()
+        if (hashedpw.length) {
+            return
+        }
+    }
+    catch (err) {
+    }
+
+    console.log("Running SPOT without a password.  Use 'SPOTPW=<password> docker run -e SPOTPW ...' to set a site password.")
+    hashedpw = ""
+}
+loadPassword()
+
+function checkSignIn(req, res, next){
+    if(req.session.signedin){
+        next();
+    }
+    else if (hashedpw === "") {
+        next();
+    }
+    else {
+        req.session.initialpage = req.originalUrl
+        res.redirect('/login')
+    }
+}
+
+app.get('/login', function(req, res){
+    res.render('login');
+});
+
+app.get('*', checkSignIn)
+
 // Handle static files
 app.use(express.static('/usr/gapps/spot/static/'))
+
+app.post('/login', function(req, res){
+    if (!req.body.password){
+        res.render('login', {message: "Please enter a password"});
+    }
+    else if (!bcrypt.compareSync(req.body.password, hashedpw)) {
+        res.render('login', {message: "Invalid password"});
+    }
+    else {
+        req.session.signedin = true
+        if (req.session.hasOwnProperty("initialpage")) {
+            redirectto = req.session.initialpage
+            req.session.initialpage = null
+            res.redirect(redirectto)
+        }
+        else {
+            res.redirect('/')
+        }
+    }
+});
+
+app.get('/logout', function(req, res){
+    req.session.destroy(function(){
+        console.log("user logged out.")
+    });
+    res.redirect('/login');
+});
 
 function sanitizepath(userpath) {
     if (typeof(userpath) !== 'string')

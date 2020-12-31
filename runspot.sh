@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ $UID == 0 ]] ; then
-    exec sudo -u spot `realpath $0` $*
+    exec sudo --preserve-env=SPOTPW -u spot `realpath $0` $*
 fi
 
 jupytertoken=`tr -dc A-Za-z0-9 < /dev/urandom | head -c 16`
@@ -10,7 +10,7 @@ jupytertoken=`tr -dc A-Za-z0-9 < /dev/urandom | head -c 16`
 JUPYTERPID=$!
 export JUPYTERSERVER=`/opt/conda/bin/jupyter --runtime-dir`/nbserver-$JUPYTERPID.json
 
-node /usr/gapps/spot/app.js &
+echo $SPOTPW | node /usr/gapps/spot/app.js &
 
 wait
 

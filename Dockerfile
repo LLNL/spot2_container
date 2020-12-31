@@ -7,8 +7,8 @@ RUN sudo apt install -y --fix-missing make cmake g++ nodejs npm
 RUN sudo /opt/conda/bin/pip install pandas matplotlib
 run sudo /opt/conda/bin/pip3 install pyyaml graphframes
 RUN npm init -y
-RUN npm install express
-RUN npm install path
+COPY package*.json /usr/gapps/spot/
+RUN npm install express path express-session multer body-parser cookie-parser pug bcryptjs
 RUN mkdir /notebooks /data
 COPY Caliper Caliper
 RUN cd /usr/gapps/spot/Caliper \
@@ -43,6 +43,7 @@ COPY spotbe/demos /demos
 COPY backend_config.yaml .
 COPY app.js .
 COPY runspot.sh .
+COPY hashpw.js .
 
 RUN chmod 755 runspot.sh
 RUN chmod 777 /notebooks
@@ -51,5 +52,8 @@ RUN addgroup spot
 RUN useradd --create-home --shell /bin/bash -g spot spot
 
 EXPOSE 8080/tcp 8888/tcp
+
+ARG DEFAULT_SPOTPW
+RUN echo $DEFAULT_SPOTPW | node /usr/gapps/spot/hashpw.js > /usr/gapps/spot/defaultpw
 
 CMD [ "/usr/gapps/spot/runspot.sh" ]

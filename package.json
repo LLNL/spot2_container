@@ -1,0 +1,22 @@
+{
+  "name": "spot",
+  "version": "2.3.0",
+  "description": "Performance history visualization for HPC applications",
+  "main": "app.js",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.5",
+    "multer": "^1.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://lc.llnl.gov/bitbucket/scm/spot2/spot2_container.git"
+  },
+  "author": "LLNL",
+  "license": "Apache-2.0"
+}
