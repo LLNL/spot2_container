@@ -63,7 +63,12 @@ function checkSignIn(req, res, next){
         next();
     }
     else {
-        req.session.initialpage = req.originalUrl
+        if (req.originalUrl == '/favicon.ico') {
+            req.session.initialpage = '/'
+        }
+        else {
+            req.session.initialpage = req.originalUrl
+        }
         res.redirect('/login')
     }
 }
