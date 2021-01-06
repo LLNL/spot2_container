@@ -132,6 +132,8 @@ app.post('/getdata',(req, res) =>{
                     sanitizepath(req.body.dataSetKey) + 
                      " '" + JSON.stringify(req.body.cachedRunCtimes) + "'"
 
+    console.log('getdata test.');
+
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
             res.send(stdout.toString())
         })
@@ -140,17 +142,17 @@ app.post('/getdata',(req, res) =>{
 
 app.post('/getmemory',(req, res) =>{
 
-    //console.log('app.js /getmemory');
     var filepath = req.body.filepath;
+    console.log("filepath2: " + filepath);
+
+    //filepath = 'lul_sept_28_timeseries/200924-16330964138.cali';
 
     //  /usr/gapps/spot/venv_python/bin/python3 /usr/gapps/spot/dev/spot.py memory /usr/gapps/spot/datasets/lulesh_gen/100/1.cali
     const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml memory /data/" +
                 filepath;
 
 
-    //console.log( filepath );
-    //console.log(command);
-    //console.log(req.body.filepath);
+    console.log('getmemory: ' + command);
 
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
 
