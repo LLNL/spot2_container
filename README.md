@@ -10,33 +10,8 @@ This is the container recipe for SPOT, which depends on sever projects linked in
 You should clone or checkout this project with the --recurse-submodules option.  This project can be built
 with Docker or with charliecloud (which allows you to run without root).  
 
-This SPOT container will only show .cali performance files mounted in the /data area.  Use relative
-paths when selecting subdirectories in /data, not absolute paths.
-
-Note that this container image is not secure.  Do not expose the ports opened outside of the local machine.
-
-## Instructions for Using Charliecloud
-
-### Build to a Directory Image:
-
-1. cd to directory with Dockerfile
-2. ch-build -t spot2 .
-3. create a spot2.tar.gz 
-   >ch-builder2tar spot2 .
-4. Unpack new image
-   >ch-tar2dir spot2.tar.gz .
-
-Or build straight to a directory without a tarball:
-
-2. ch-build2dir -t spot2 . spot2/
-
-### Start the Image: 
-
-1. start web-server: 
-   >ch-run ./spot2 --bind=</path/to/host/data/>:/data -w
-
-open browser url address:
-    localhost:8080
+This SPOT container will only show .cali performance files mounted in the /data area.
+You can also show test data in the /demos/mpi and /demos/test.
 
 ## Instructions for using Docker
 
@@ -80,6 +55,30 @@ in the container.
 - General configuration can be set in the /etc/spot/backend_config.yaml file.  If this file doesn't exist,
 SPOT will use static /usr/gapps/spot/backend_config.yaml instead.  This file can be used to point at
 other versions of caliper, different Jupyter templates, or Jupyter connection information.
+
+## Instructions for Using Charliecloud
+
+### Build to a Directory Image:
+
+1. cd to directory with Dockerfile
+2. ch-build -t spot2 .
+3. create a spot2.tar.gz 
+   >ch-builder2tar spot2 .
+4. Unpack new image
+   >ch-tar2dir spot2.tar.gz .
+
+Or build straight to a directory without a tarball:
+
+2. mkdir spot2/
+3. ch-build2dir -t spot2 . spot2/
+
+### Start the Image: 
+
+1. start web-server: 
+   >ch-run ./spot2 --bind=</path/to/host/data/>:/data /usr/gapps/spot/runspot.sh
+
+open browser url address:
+    localhost:8080
 
 ## Copyright
 
