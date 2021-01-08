@@ -6,8 +6,7 @@
 	url = https://github.com/LLNL/Caliper.git
 [submodule "spotbe"]
 	path = spotbe
-	url = https://lc.llnl.gov/bitbucket/scm/spot2/spotbe.git
-
+	url = https://github.com/LLNL/spotbe.git
 [submodule "spotfe"]
 	path = spotfe
-	url = https://lc.llnl.gov/bitbucket/scm/spot2/spotfe.git
+	url = https://github.com/LLNL/spotfe.git
