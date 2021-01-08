@@ -1,3 +1,12 @@
-caliquery: /usr/gapps/spot/caliper-install/bin/cali-query
+#Paths to SPOT dependencies.  These likely shouldn't change.
+caliquery: '/usr/gapps/spot/caliper-install/bin/cali-query'
 template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-singlecali.ipynb'
 multi_template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-manycali.ipynb'
+
+#Zero port and empty host string for Jupyter means to use defaults.
+jupyter_port: 0
+jupyter_host: ''
+
+#A blank token string means to re-generate the token on container launch.
+jupyter_use_token: True
+jupyter_token: ''

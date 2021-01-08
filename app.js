@@ -18,12 +18,46 @@ app.use(express.json())
 app.set('view engine', 'pug');
 app.set('views', '/usr/gapps/spot/static/views');
 
+var sessionkey = ""
+function setServerSessionKey()
+{
+    try {
+        sessionkey = fs.readFileSync("/etc/spot/sessionkey").toString().trim()
+    }
+    catch (err) { }
+
+    if (!sessionkey.length) {
+        sessionkey = crypto.randomBytes(64).toString('hex')
+    }
+    
+}
+
+var pythonconfig = ""
+function setPythonConfig()
+{
+    if (fs.existsSync("/etc/spot/backend_config.yaml")) {
+        try {
+            fs.accessSync("/etc/spot/backend_config.yaml", fs.constants.R_OK)
+            pythonconfig = "/etc/spot/backend_config.yaml"
+        }
+        catch (err) {
+            console.log("Warning: /etc/spot/backend_config.yaml exists but isn't readable")
+        }
+    }
+
+    if (pythonconfig == "") {
+        pythonconfig = "/usr/gapps/spot/backend_config.yaml";
+    }
+}
+setPythonConfig()
+
+setServerSessionKey()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array());
 app.use(cookieParser());
 app.use(session({
-    secret: crypto.randomBytes(64).toString('hex'),
+    secret: sessionkey,
     resave: false,
     saveUninitialized: false
 }))
@@ -42,7 +76,7 @@ function loadPassword() {
     }
 
     try {
-        hashedpw = fs.readFileSync("/usr/gapps/spot/defaultpw").toString().trim()
+        hashedpw = fs.readFileSync("/etc/spot/defaultpw").toString().trim()
         if (hashedpw.length) {
             return
         }
@@ -63,15 +97,12 @@ function checkSignIn(req, res, next){
         next();
     }
     else {
-        if (req.originalUrl == '/favicon.ico') {
-            req.session.initialpage = '/'
-        }
-        else {
-            req.session.initialpage = req.originalUrl
-        }
+        req.session.initialpage = req.originalUrl
         res.redirect('/login')
     }
 }
+
+app.use('/favicon.ico', express.static('/usr/gapps/spot/static/images/favicon.ico'))
 
 app.get('/login', function(req, res){
     res.render('login');
@@ -133,7 +164,7 @@ function sanitizepath(userpath) {
 app.post('/getdata',(req, res) =>{
     
 
-    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml getData " + 
+    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config " + pythonconfig + " getData " + 
                     sanitizepath(req.body.dataSetKey) + 
                      " '" + JSON.stringify(req.body.cachedRunCtimes) + "'"
 
@@ -149,7 +180,7 @@ app.post('/getmemory',(req, res) =>{
     var filepath = req.body.filepath;
 
     //  /usr/gapps/spot/venv_python/bin/python3 /usr/gapps/spot/dev/spot.py memory /usr/gapps/spot/datasets/lulesh_gen/100/1.cali
-    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml memory /data/" +
+    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config " + pythonconfig + " memory /data/" +
                 filepath;
 
 
@@ -166,7 +197,7 @@ app.post('/getmemory',(req, res) =>{
 
 
 app.post('/spotJupyter',(req, res) =>{
-    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container jupyter '` + sanitizepath(req.body.filepath) + `'`
+    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config ` + pythonconfig + ` --container jupyter '` + sanitizepath(req.body.filepath) + `'`
     
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())
@@ -174,7 +205,7 @@ app.post('/spotJupyter',(req, res) =>{
 })
 
 app.post('/spotMultiJupyter',(req, res) =>{
-    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config /usr/gapps/spot/backend_config.yaml --container multi_jupyter '` +
+    const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config ` + pythonconfig + ` --container multi_jupyter '` +
           sanitizepath(req.body.basepath) + `' '${JSON.stringify(req.body.subpaths)}'`
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())

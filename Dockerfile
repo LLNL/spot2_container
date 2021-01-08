@@ -44,6 +44,9 @@ COPY backend_config.yaml .
 COPY app.js .
 COPY runspot.sh .
 COPY hashpw.js .
+COPY gensession.js .
+COPY readconf.py .
+
 
 RUN chmod 755 runspot.sh
 RUN chmod 777 /notebooks
@@ -52,8 +55,5 @@ RUN addgroup spot
 RUN useradd --create-home --shell /bin/bash -g spot spot
 
 EXPOSE 8080/tcp 8888/tcp
-
-ARG DEFAULT_SPOTPW
-RUN echo $DEFAULT_SPOTPW | node /usr/gapps/spot/hashpw.js > /usr/gapps/spot/defaultpw
 
 CMD [ "/usr/gapps/spot/runspot.sh" ]

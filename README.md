@@ -33,10 +33,7 @@ Or build straight to a directory without a tarball:
 ### Start the Image: 
 
 1. start web-server: 
-   >ch-run ./spot2 --bind=</path/to/host/data/>:/data -w -- node /usr/gapps/spot/app.js 
-
-2. start jupyter server:    
-   >ch-run ./spot2 --bind=</path/to/host/data/>:/data -w -- /opt/conda/bin/jupyter notebook --notebook-dir=/notebooks --NotebookApp.token="" --NotebookApp.password="" --no-browser
+   >ch-run ./spot2 --bind=</path/to/host/data/>:/data -w
 
 open browser url address:
     localhost:8080
@@ -56,9 +53,35 @@ open browser url address:
 open browser url address:
     localhost:8080
 
+## Configuring SPOT ##
+
+Configuration files can be optionally stored in the container in /etc/spot/.  For a persistant configuration,
+mount an external directory onto /etc/spot.  There are three configuration files you may care about:
+
+- /etc/spot/defaultpw: You can put a site-wide password on the SPOT web page that must be provided
+by each user when first accessing the site.  The password is stored in a hashed form.  To generate the
+file run something like:
+  ``echo seespotrun | node /usr/gapps/spot/hashpw.js > /etc/spot/defaultpw``
+in the container.  Substitute your own password for seespotrun.
+
+You can alternatively provide a password at container launch.  To do so set the password in the SPOTPW
+environment variable and pass it to the container with something like:
+  ``SPOTPW=seespotrun docker run -e SPOTPW ....``
+
+If no passwords are provided then the SPOT data is available to any users who connect to the web server.
+Note that SPOT's Jupyter integration essentionally gives any connected user a terminal in the container.
+
+- The web server's session key can be stored in /etc/spot/sessionkey.  This can be any relatively random
+string that will be used to maintain session state across launches of the SPOT container.  To generate
+a random session key you can run:
+  ``node /usr/gapps/spot/gensession.js > /etc/spot/sessionkey``
+in the container.
+
+- General configuration can be set in the /etc/spot/backend_config.yaml file.  If this file doesn't exist,
+SPOT will use static /usr/gapps/spot/backend_config.yaml instead.  This file can be used to point at
+other versions of caliper, different Jupyter templates, or Jupyter connection information.
 
 ## Copyright
 
-Copyright (c) 2020, Lawrence Livermore National Security, LLC. Produced at
-the Lawrence Livermore National Laboratory. Written by Matthew LeGendre
-'legendre1 at llnl dot gov'. LLNL-CODE-813387. All rights reserved.
+Copyright (c) 2021, Lawrence Livermore National Security, LLC. Produced at
+the Lawrence Livermore National Laboratory. LLNL-CODE-813387. All rights reserved.
