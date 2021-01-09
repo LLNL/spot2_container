@@ -176,10 +176,11 @@ app.post('/getdata',(req, res) =>{
 
 app.post('/getmemory',(req, res) =>{
 
-    var filepath = req.body.filepath;
-    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config " + pythonconfig + " memory /data/" +
-                filepath;
+    var filepath = sanitizepath( req.body.filepath );
 
+    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config " + pythonconfig + " memory " +
+                filepath;
+    
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
             res.send(stdout.toString())
         })
