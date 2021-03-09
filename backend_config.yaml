@@ -10,3 +10,7 @@ jupyter_host: ''
 #A blank token string means to re-generate the token on container launch.
 jupyter_use_token: True
 jupyter_token: ''
+
+#A blank token for usage logging disables usage logging
+usage_logging_dir: ''
+
