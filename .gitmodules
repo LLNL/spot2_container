@@ -1,6 +1,6 @@
 [submodule "hatchet"]
 	path = hatchet
-	url = https://github.com/LLNL/hatchet.git
+	url = https://github.com/hatchet/hatchet.git
 [submodule "Caliper"]
 	path = Caliper
 	url = https://github.com/LLNL/Caliper.git
