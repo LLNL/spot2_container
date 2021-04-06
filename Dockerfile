@@ -46,7 +46,7 @@ COPY runspot.sh .
 COPY hashpw.js .
 COPY gensession.js .
 COPY readconf.py .
-
+RUN ln -s /demos/hatchet-ecp2021-materials /notebooks/hatchet
 
 RUN chmod 755 runspot.sh
 RUN chmod 777 /notebooks
