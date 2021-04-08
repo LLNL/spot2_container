@@ -174,7 +174,7 @@ app.post('/getdata',(req, res) =>{
 })
 
 
-app.post('/getmemory',(req, res) =>{
+app.post('(/sankey)?/getmemory',(req, res) =>{
 
     var filepath = sanitizepath( req.body.filepath );
 

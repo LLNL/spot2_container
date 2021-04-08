@@ -29,7 +29,14 @@ else
     JUPYTER_TOKEN_ARG="--NotebookApp.token="
 fi
 
-/opt/conda/bin/jupyter notebook --notebook-dir=/notebooks $JUPYTER_TOKEN_ARG $JUPYTER_PORT_ARG --NotebookApp.password="" --no-browser &
+JUPYTER_BASE_URL=`/opt/conda/bin/python3 /usr/gapps/spot/readconf.py $CONFIGFILE jupyter_base_url`
+if [[ x$JUPYTER_BASE_URL != "x" && x$JUPYTER_BASE_URL != "xNone" ]]; then
+    JUPYTER_BASE_URL_ARG="--NotebookApp.base_url=$JUPYTER_BASE_URL"
+else
+    JUPYTER_BASE_URL_ARG=""
+fi
+
+/opt/conda/bin/jupyter notebook --notebook-dir=/notebooks $JUPYTER_TOKEN_ARG $JUPYTER_PORT_ARG $JUPYTER_BASE_URbackL_ARG --NotebookApp.password="" --no-browser &
 JUPYTERPID=$!
 export JUPYTERSERVER=`/opt/conda/bin/jupyter --runtime-dir`/nbserver-$JUPYTERPID.json
 
