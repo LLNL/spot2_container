@@ -53,6 +53,11 @@ if [[ x$USE_JUPYTERHUB == "x" ]] ; then
   export JUPYTERSERVER=`/opt/conda/bin/jupyter --runtime-dir`/nbserver-$JUPYTERPID.json
 fi
 
+SPOT_BASE_URL=`/opt/conda/bin/python3 /usr/gapps/spot/readconf.py $CONFIGFILE spot_base_url`
+if [[ x$SPOT_BASE_URL != "x" ]] ; then
+    export SPOTBASEURL=$SPOT_BASE_URL
+fi
+
 echo $SPOTPW | node /usr/gapps/spot/app.js &
 
 wait

@@ -11,12 +11,26 @@ var cookieParser = require('cookie-parser')
 const bcrypt = require('bcryptjs')
 const fs = require('fs')
 const crypto = require('crypto')
-
+var spotBaseUrl = process.env.SPOTBASEURL || ''
 
 app.use(express.json())
 
 app.set('view engine', 'pug');
 app.set('views', '/usr/gapps/spot/static/views');
+
+function formatBaseUrl()
+{
+    if (spotBaseUrl.trim().length == 0) {
+        spotBaseUrl = ''
+        return
+    }
+    if (!spotBaseUrl.startsWith('/')) {
+        spotBaseUrl = '/' + spotBaseUrl
+    }
+    while (spotBaseUrl.endsWith('/')) {
+        spotBaseUrl = spotBaseUrl.substring(0, spotBaseUrl.length - 1)
+    }
+}
 
 var sessionkey = ""
 function setServerSessionKey()
@@ -52,6 +66,7 @@ function setPythonConfig()
 setPythonConfig()
 
 setServerSessionKey()
+formatBaseUrl()
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(upload.array());
@@ -98,14 +113,14 @@ function checkSignIn(req, res, next){
     }
     else {
         req.session.initialpage = req.originalUrl
-        res.redirect('/login')
+        res.redirect(spotBaseUrl + '/login')
     }
 }
 
 app.use('/favicon.ico', express.static('/usr/gapps/spot/static/images/favicon.ico'))
 
 app.get('/login', function(req, res){
-    res.render('login');
+    res.render('login', { loginurl: spotBaseUrl + '/login'});
 });
 
 app.get('*', checkSignIn)
@@ -115,20 +130,20 @@ app.use(express.static('/usr/gapps/spot/static/'))
 
 app.post('/login', function(req, res){
     if (!req.body.password){
-        res.render('login', {message: "Please enter a password"});
+        res.render('login', {message: "Please enter a password", loginurl: spotBaseUrl + '/login' });
     }
     else if (!bcrypt.compareSync(req.body.password, hashedpw)) {
-        res.render('login', {message: "Invalid password"});
+        res.render('login', {message: "Invalid password", loginurl: spotBaseUrl + '/login' });
     }
     else {
         req.session.signedin = true
         if (req.session.hasOwnProperty("initialpage")) {
             redirectto = req.session.initialpage
             req.session.initialpage = null
-            res.redirect(redirectto)
+            res.redirect(spotBaseUrl + redirectto)
         }
         else {
-            res.redirect('/')
+            res.redirect(spotBaseUrl + '/')
         }
     }
 });
@@ -137,7 +152,7 @@ app.get('/logout', function(req, res){
     req.session.destroy(function(){
         console.log("user logged out.")
     });
-    res.redirect('/login');
+    res.redirect(spotBaseUrl + '/login');
 });
 
 function sanitizepath(userpath) {

@@ -3,6 +3,9 @@ caliquery: '/usr/gapps/spot/caliper-install/bin/cali-query'
 template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-singlecali.ipynb'
 multi_template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-manycali.ipynb'
 
+#If SPOT is hosted under a baseUrl (from say a proxy), then specify the url piece
+spot_base_url: ''
+
 # If using Jupyterhub instead of Jupyter, then you should also be providing a
 # /etc/jupyterhub/jupyterhub_config.py that sets up Jupyterhub's authentication.
 use_jupyterhub: False
