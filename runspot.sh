@@ -9,7 +9,7 @@ fi
 USE_JUPYTERHUB=`/opt/conda/bin/python3 /usr/gapps/spot/readconf.py $CONFIGFILE use_jupyterhub`
 
 if [[ $UID == 0 ]] ; then
-    if [[ x$USE_JUPYTERHUB != "x" ]] ; then
+    if [[ x$USE_JUPYTERHUB == "xTrue" || x$USE_JUPYTERHUB == "xtrue" ]] ; then
         JUPYTERCONF_OPT=
         if [[ -f /etc/jupyterhub/jupyterhub_config.py ]] ; then
             JUPYTERCONF_OPT="-f /etc/jupyterhub/jupyterhub_config.py"
@@ -22,7 +22,7 @@ fi
 
 cd /usr/gapps/spot
 
-if [[ x$USE_JUPYTERHUB == "x" ]] ; then    
+if [[ x$USE_JUPYTERHUB == "x" || x$USE_JUPYTERHUB == "xFalse" || x$USE_JUPYTERHUB == "xfalse" ]] ; then
   JUPYTER_PORT=`/opt/conda/bin/python3 /usr/gapps/spot/readconf.py $CONFIGFILE jupyter_port`
   if [[ x$JUPYTER_PORT != "x0" && x$JUPYTER_PORT != "x" && x$JUPYTER_PORT != "xNone" ]]; then
       JUPYTER_PORT_ARG="--port $JUPYTER_PORT"
