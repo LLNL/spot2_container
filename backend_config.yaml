@@ -3,6 +3,10 @@ caliquery: '/usr/gapps/spot/caliper-install/bin/cali-query'
 template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-singlecali.ipynb'
 multi_template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-manycali.ipynb'
 
+# If using Jupyterhub instead of Jupyter, then you should also be providing a
+# /etc/jupyterhub/jupyterhub_config.py that sets up Jupyterhub's authentication.
+use_jupyterhub: False
+
 #Zero port and empty host string for Jupyter means to use defaults.
 jupyter_port: 0
 jupyter_host: ''
@@ -10,6 +14,14 @@ jupyter_host: ''
 #A blank token string means to re-generate the token on container launch.
 jupyter_use_token: True
 jupyter_token: ''
+
+#If jupyter_lookup_host, then ignore jupyter_port and jupyter_host and
+# instead use the host/port for SPOT as seen on the front-end.  Would
+# need to be combined with a jupyter_base_url.
+jupyter_lookup_host: False
+
+#A url prefix for jupyter.
+jupyter_base_url: ''
 
 #A blank token for usage logging disables usage logging
 usage_logging_dir: ''

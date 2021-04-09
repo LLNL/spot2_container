@@ -46,13 +46,18 @@ COPY runspot.sh .
 COPY hashpw.js .
 COPY gensession.js .
 COPY readconf.py .
-RUN ln -s /demos/hatchet-ecp2021-materials /notebooks/hatchet
 
 RUN chmod 755 runspot.sh
 RUN chmod 777 /notebooks
 
 RUN addgroup spot
 RUN useradd --create-home --shell /bin/bash -g spot spot
+
+RUN mkdir -p /notebooks/spot
+RUN chown spot /notebooks/spot
+RUN chgrp spot /notebooks/spot
+RUN chmod 0755 /notebooks/spot
+RUN ln -s /demos/hatchet-ecp2021-materials /notebooks/hatchet
 
 EXPOSE 8080/tcp 8888/tcp
 
