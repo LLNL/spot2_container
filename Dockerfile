@@ -38,6 +38,7 @@ COPY spotfe/ static/
 # Environment values for front-end 
 COPY Environment.js static/web/js/
 COPY spotbe/spot.py ./backend.py
+COPY spotbe/RunTable.py ./RunTable.py
 COPY spotbe/templates/ templates
 COPY spotbe/demos /demos
 COPY backend_config.yaml .
