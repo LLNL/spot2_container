@@ -2,10 +2,10 @@
 FROM jupyter/minimal-notebook
 USER root
 WORKDIR /usr/gapps/spot
-RUN sudo apt update 
-RUN sudo apt install -y --fix-missing make cmake g++ nodejs npm
-RUN sudo /opt/conda/bin/pip install pandas matplotlib
-run sudo /opt/conda/bin/pip3 install pyyaml graphframes
+RUN apt-get update
+RUN apt-get install -y --fix-missing make cmake g++ nodejs npm
+RUN /opt/conda/bin/pip3 install pandas matplotlib
+RUN /opt/conda/bin/pip3 install pyyaml graphframes
 RUN npm init -y
 COPY package*.json /usr/gapps/spot/
 RUN npm install express path express-session multer body-parser cookie-parser pug bcryptjs
