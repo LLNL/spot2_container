@@ -48,7 +48,7 @@ if [[ x$USE_JUPYTERHUB == "x" || x$USE_JUPYTERHUB == "xFalse" || x$USE_JUPYTERHU
       JUPYTER_BASE_URL_ARG=""
   fi
 
-  /opt/conda/bin/jupyter notebook --notebook-dir=/notebooks $JUPYTER_TOKEN_ARG $JUPYTER_PORT_ARG $JUPYTER_BASE_URbackL_ARG --NotebookApp.password="" --no-browser &
+  /opt/conda/bin/jupyter notebook --notebook-dir=/notebooks $JUPYTER_TOKEN_ARG $JUPYTER_PORT_ARG $JUPYTER_BASE_URL_ARG --NotebookApp.password="" --no-browser &
   JUPYTERPID=$!
   export JUPYTERSERVER=`/opt/conda/bin/jupyter --runtime-dir`/nbserver-$JUPYTERPID.json
 fi
