@@ -189,6 +189,17 @@ app.post('/getdata',(req, res) =>{
 })
 
 
+app.post('/getTemplates', (req, res) => {
+
+    var pathToCheck = 'lul_sept_28_timeseries';
+    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config " + pythonconfig + " getTemplates " +
+                    sanitizepath(pathToCheck);
+
+    exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
+            res.send(stdout.toString())
+        })
+});
+
 app.post('(/sankey)?/getmemory',(req, res) =>{
 
     var filepath = sanitizepath( req.body.filepath );
