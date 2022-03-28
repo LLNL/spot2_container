@@ -9,6 +9,11 @@ RUN /opt/conda/bin/pip3 install pyyaml graphframes
 RUN npm init -y
 COPY package*.json /usr/gapps/spot/
 RUN npm install express path express-session multer body-parser cookie-parser pug bcryptjs
+RUN sudo apt-get -y install python3-pip
+RUN sudo pip install caliper-reader
+RUN sudo pip install llnl-sina
+RUN sudo pip install tqdm
+
 RUN mkdir /notebooks /data
 COPY Caliper Caliper
 RUN cd /usr/gapps/spot/Caliper \
