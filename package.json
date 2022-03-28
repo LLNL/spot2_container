@@ -3,6 +3,7 @@
   "version": "2.3.0",
   "description": "Performance history visualization for HPC applications",
   "main": "app.js",
+  "devtool": "source-map",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
