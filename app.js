@@ -183,6 +183,25 @@ app.post('/getdata',(req, res) =>{
                     sanitizepath(req.body.dataSetKey) + 
                      " '" + JSON.stringify(req.body.cachedRunCtimes) + "'"
 
+    var com = 'command=' + command;
+    console.log(com);
+
+    exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
+            res.send(stdout.toString())
+        })
+})
+
+
+app.post('(/sankey)?/getTimeseriesData',(req, res) =>{
+
+    console.log('req.body.filepath=' + req.body.filepath );
+
+    var filepath = sanitizepath( req.body.filepath );
+
+    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config " + pythonconfig + " getTimeseriesData " +
+                filepath;
+    console.log('getTimeseriesData command=' + command);
+
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
             res.send(stdout.toString())
         })
