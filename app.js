@@ -156,8 +156,9 @@ app.get('/logout', function(req, res){
 });
 
 function sanitizepath(userpath) {
+    console.dir(userpath);
     if (typeof(userpath) !== 'string')
-        return "/invalidpath";
+        return "/invalidpathisnotastring";
 
     abspath = ""
     if (path.isAbsolute(userpath)) {
@@ -191,6 +192,20 @@ app.post('/getdata',(req, res) =>{
         })
 })
 
+// API for data
+app.post('/getTemplates',(req, res) =>{
+    // console.dir(req);
+
+    const command = "/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config " + pythonconfig + " getTemplates " + 
+                    sanitizepath(req.body.filepath) 
+
+    var com = 'command=' + command;
+    console.log(com);
+
+    exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
+            res.send(stdout.toString())
+        })
+})
 
 app.post('(/sankey)?/getTimeseriesData',(req, res) =>{
 
