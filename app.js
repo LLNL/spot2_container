@@ -245,8 +245,11 @@ app.post('/spotJupyter',(req, res) =>{
 })
 
 app.post('/spotMultiJupyter',(req, res) =>{
+
     const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config ` + pythonconfig + ` --container multi_jupyter '` +
-          sanitizepath(req.body.basepath) + `' '${JSON.stringify(req.body.subpaths)}'`
+          sanitizepath(req.body.basepath) + `' '${JSON.stringify(req.body.subpaths)}'` + "  --custom_template=" + req.body.selected_notebook
+    console.log('command=' + command);
+
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())
          })

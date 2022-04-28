@@ -46,7 +46,9 @@ COPY spotbe/spot.py ./backend.py
 COPY spotbe/RunTable.py ./RunTable.py
 COPY spotbe/CustomTemplates.py ./CustomTemplates.py
 COPY spotbe/ErrorHandling.py ./ErrorHandling.py
-COPY spotbe/templates/ templates
+RUN mkdir -p templates/multi templates/single
+COPY spotbe/templates/TemplateNotebook_HatchetSpotDBSingle.ipynb templates/single/
+COPY spotbe/templates/TemplateNotebook_HatchetSpotDB.ipynb templates/multi/
 COPY spotbe/demos /demos
 COPY spotbe/spotdb spotdb
 COPY backend_config.yaml .
@@ -66,6 +68,8 @@ RUN mkdir -p /notebooks/spot
 RUN chown spot /notebooks/spot
 RUN chgrp spot /notebooks/spot
 RUN chmod 0755 /notebooks/spot
+RUN chmod 0755 templates/single templates/multi
+RUN chmod 0644 templates/single/*.ipynb templates/multi/*.ipynb
 RUN ln -s /demos/hatchet-ecp2021-materials /notebooks/hatchet
 
 EXPOSE 8080/tcp 8888/tcp
