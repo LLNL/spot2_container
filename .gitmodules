@@ -1,12 +1,13 @@
 [submodule "hatchet"]
 	path = hatchet
-	url = https://github.com/hatchet/hatchet.git
+	url = https://github.com/LLNL/hatchet.git
 [submodule "Caliper"]
 	path = Caliper
 	url = https://github.com/LLNL/Caliper.git
 [submodule "spotbe"]
 	path = spotbe
 	url = https://github.com/LLNL/spotbe.git
+	branch = ecp22-tutorial
 [submodule "spotfe"]
 	path = spotfe
 	url = https://github.com/LLNL/spotfe.git
