@@ -192,7 +192,7 @@ app.post('/getdata',(req, res) =>{
 })
 
 
-app.post('(/sankey)?/getTimeseriesData',(req, res) =>{
+app.post('(/views)?/getTimeseriesData',(req, res) =>{
 
     console.log('req.body.filepath=' + req.body.filepath );
 
