@@ -45,6 +45,7 @@ COPY Environment.js static/web/js/
 COPY spotbe/spot.py ./backend.py
 COPY spotbe/RunTable.py ./RunTable.py
 COPY spotbe/ErrorHandling.py ./ErrorHandling.py
+COPY spotbe/CustomTemplates.py ./CustomTemplates.py
 COPY spotbe/templates/ templates
 COPY spotbe/demos /demos
 COPY spotbe/spotdb spotdb
