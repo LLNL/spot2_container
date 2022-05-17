@@ -234,6 +234,7 @@ app.post('(/sankey)?/getmemory',(req, res) =>{
 
 app.post('/spotJupyter',(req, res) =>{
     const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config ` + pythonconfig + ` --container jupyter '` + sanitizepath(req.body.filepath) + `'`
+    console.log('spotJupyter: command=' + command);
     
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())
@@ -241,8 +242,18 @@ app.post('/spotJupyter',(req, res) =>{
 })
 
 app.post('/spotMultiJupyter',(req, res) =>{
+
+    var custom_template = "";
+
+    if( req.body.selected_notebook ) {
+        custom_template += " --custom_template=" + req.body.selected_notebook;
+    }
+
     const command = `/opt/conda/bin/python3 /usr/gapps/spot/backend.py --config ` + pythonconfig + ` --container multi_jupyter '` +
-          sanitizepath(req.body.basepath) + `' '${JSON.stringify(req.body.subpaths)}'`
+          sanitizepath(req.body.basepath) + `' '${JSON.stringify(req.body.subpaths)}'` + custom_template;
+
+    console.log('spotMultiJupyter: command=' + command);
+
     exec(command, {maxBuffer:1024*1024*1024}, (err, stdout, stderr) => {
              res.send(stdout.toString())
          })
