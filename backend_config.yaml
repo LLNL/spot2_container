@@ -1,7 +1,7 @@
 #Paths to SPOT dependencies.  These likely shouldn't change.
 caliquery: '/usr/gapps/spot/caliper-install/bin/cali-query'
-template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-singlecali.ipynb'
-multi_template_notebook: '/usr/gapps/spot/templates/TemplateNotebook_hatchet-manycali.ipynb'
+template_notebook: '/usr/gapps/spot/templates/single/TemplateNotebook_HatchetSpotDBSingle.ipynb'
+multi_template_notebook: '/usr/gapps/spot/templates/multi/TemplateNotebook_HatchetSpotDB.ipynb'
 
 #If SPOT is hosted under a baseUrl (from say a proxy), then specify the url piece
 spot_base_url: ''
