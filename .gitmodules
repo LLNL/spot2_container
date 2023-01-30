@@ -1,6 +1,7 @@
 [submodule "hatchet"]
 	path = hatchet
-	url = https://github.com/hatchet/hatchet.git
+	url = https://github.com/LLNL/hatchet.git
+    branch = releases/2022.1.0
 [submodule "Caliper"]
 	path = Caliper
 	url = https://github.com/LLNL/Caliper.git
